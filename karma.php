@@ -8,26 +8,26 @@ function getJson(string $url): array
 }
 
 $bugs = [
-    '1814780',
-    '1812120',
-    '1805177',
-    '1814696',
-    '1814537',
-    '1813991',
-    '1816160',
-    '1816001',
-    '1816214',
-    '1816191',
-    '1815309',
-    '1816943',
-    '1813498',
-    '1815843',
-    '1763990',
-    '1799684',
-    '1817269',
+    1814780,
+    1812120,
+    1805177,
+    1814696,
+    1814537,
+    1813991,
+    1816160,
+    1816001,
+    1816214,
+    1816191,
+    1815309,
+    1816943,
+    1813498,
+    1815843,
+    1763990,
+    1799684,
+    1817269,
 ];
 
-$bug_list_details = getJson('https://bugzilla.mozilla.org/rest/bug?include_fields=id,summary,priority,severity,keywords,cf_tracking_firefox110&bug_id=' . implode('%2C', $bugs))['bugs'];
+$bug_list_details = getJson('https://bugzilla.mozilla.org/rest/bug?include_fields=id,summary,priority,severity,keywords,duplicates,cf_tracking_firefox110&bug_id=' . implode('%2C', $bugs))['bugs'];
 
 $bug_summaries = array_column($bug_list_details, 'summary', 'id');
 
@@ -80,7 +80,11 @@ foreach ($bug_list_details as $value) {
     if ($value['cf_tracking_firefox110'] === 'blocking') {
         $bugs_value[$value['id']] = $bugs_value[$value['id']] + 100;
     }
+
+    $bugs_value[$value['id']] = $bugs_value[$value['id']] + count($value['duplicates']) * 2;
+
 }
+arsort($bugs_value);
 
 echo '<ul>';
 foreach ($bugs_value as $key => $value) {
@@ -92,3 +96,8 @@ foreach ($bugs_value as $key => $value) {
 echo '</ul>';
 
 echo 'Total: ' . array_sum($bugs_value);
+
+// TODO
+// negative values (riskyness, open regressions)
+// add votes
+//
