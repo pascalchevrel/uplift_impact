@@ -27,18 +27,17 @@ $bugs = [
     1817269,
 ];
 
-
 if (isset($_GET['bug_id']) && ! empty($_GET['bug_id'])) {
     // Convert the list of comma-separated bug numbers to an array
     $bugs = explode(',', $_GET['bug_id']);
 
-    // Turn all strings as integers for security, invalid numbers are cast to 0
-    $bugs = array_map('intval', $bugs);
-
-    // Filter out all the 0 values and potential negative ones to keep only valid bug numbers
+    // Filter out all strings that can't be turned into valid bug numbers
     $bugs = array_filter($bugs, 'ctype_digit');
 
-    // Remove duplicate values
+    // Turn all strings as integers for security
+    $bugs = array_map('intval', $bugs);
+
+    // Remove duplicates
     $bugs = array_unique($bugs);
 
     // Reorder array keys now that we have removed items
