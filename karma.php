@@ -27,12 +27,31 @@ $bugs = [
     1817269,
 ];
 
-$bug_list_details = getJson('https://bugzilla.mozilla.org/rest/bug?include_fields=id,summary,priority,severity,keywords,duplicates,cf_tracking_firefox110&bug_id=' . implode('%2C', $bugs))['bugs'];
+
+if (isset($_GET['bug_id']) && ! empty($_GET['bug_id'])) {
+    // Convert the list of comma-separated bug numbers to an array
+    $bugs = explode(',', $_GET['bug_id']);
+
+    // Turn all strings as integers for security, invalid numbers are cast to 0
+    $bugs = array_map('intval', $bugs);
+
+    // Filter out all the 0 values and potential negative ones to keep only valid bug numbers
+    $bugs = array_filter($bugs, 'ctype_digit');
+
+    // Remove duplicate values
+    $bugs = array_unique($bugs);
+
+    // Reorder array keys now that we have removed items
+    $bugs = array_values($bugs);
+} else {
+    echo '<h4 style="font-weight:normal">Append <code>?bug_id=1817192,1811873,1816574,1812680,1814961,1794577,1788004,1817518,1812447</code> to the url to test your bugs (comma separated bug numbers)</h4>';
+}
+
+$bug_list_details = getJson('https://bugzilla.mozilla.org/rest/bug?include_fields=id,summary,priority,severity,keywords,duplicates,cf_tracking_firefox_release,cf_tracking_firefox_beta,cf_tracking_firefox_nightly,cf_tracking_firefox_nightly&bug_id=' . implode('%2C', $bugs))['bugs'];
 
 $bug_summaries = array_column($bug_list_details, 'summary', 'id');
-
-// header('Content-Type: text/plain; charset=utf-8');
-/*echo '<pre>';
+/*
+echo '<pre>';
 var_dump($bug_list_details);
 var_dump($bug_summaries);
 echo '</pre>';*/
@@ -54,40 +73,69 @@ $severity = [
 ];
 
 $keywords = [
-    'topcrash'      => 5,
-    'dataloss'      => 3,
-    'crash'         => 1,
-    'regression'    => 1,
-    'perf'          => 1,
+    'topcrash'   => 5,
+    'dataloss'   => 3,
+    'crash'      => 1,
+    'regression' => 1,
+    'perf'       => 1,
 ];
 
-$bugs_value = [];
+$karma = [
+    'priority' => [
+        'P1' => 4,
+        'P2' => 3,
+        'P3' => 2,
+        'P4' => 1,
+        '--' => 0,
+    ],
+    'severity' => [
+        'S1' => 8,
+        'S2' => 4,
+        'S3' => 2,
+        'S4' => 1,
+        '--' => 0,
+    ],
+    'keywords' => [
+        'topcrash'   => 5,
+        'dataloss'   => 3,
+        'crash'      => 1,
+        'regression' => 1,
+        'perf'       => 1,
+    ],
+    'duplicates' => 2,
 
-foreach ($bug_list_details as $value) {
-    $bugs_value[$value['id']] = 0;
-    $bugs_value[$value['id']] = $bugs_value[$value['id']] + $severity[$value['severity']];
+];
 
-    foreach ($value['keywords'] as $keyword) {
-        if (array_key_exists($keyword, $keywords)) {
-            $bugs_value[$value['id']] = $bugs_value[$value['id']] + $keywords[$keyword];
+$bugs = [];
+foreach ($bug_list_details as $bug) {
+    $id = $bug['id'];
+
+    $bugs[$id] = 0;
+    $bugs[$id] += $karma['severity'][$bug['severity']];
+
+    foreach ($bug['keywords'] as $keyword) {
+        if (array_key_exists($keyword, $karma['keywords'])) {
+            $bugs[$id] += $karma['keywords'][$keyword];
         }
     }
 
-    if ($value['cf_tracking_firefox110'] === '+') {
-        $bugs_value[$value['id']] = $bugs_value[$value['id']] + 2;
+    if (isset($bug['cf_tracking_firefox110']) && $bug['cf_tracking_firefox110'] === '+') {
+        $bugs[$id] += 2;
     }
 
-    if ($value['cf_tracking_firefox110'] === 'blocking') {
-        $bugs_value[$value['id']] = $bugs_value[$value['id']] + 100;
+    if (isset($bug['cf_tracking_firefox110']) && $bug['cf_tracking_firefox110'] === 'blocking') {
+        $bugs[$id] += 100;
     }
 
-    $bugs_value[$value['id']] = $bugs_value[$value['id']] + count($value['duplicates']) * 2;
+    $bugs[$id] += count($bug['duplicates']) * 2;
 
 }
-arsort($bugs_value);
+
+arsort($bugs);
+
 
 echo '<ul>';
-foreach ($bugs_value as $key => $value) {
+foreach ($bugs as $key => $value) {
     echo '<li>';
     echo 'Bug <a href="https://bugzilla.mozilla.org/' . $key . '" title="' . $bug_summaries[(int) $key]. '">' . $key . '</a> : ' . $value;
     echo '</li>';
@@ -95,7 +143,7 @@ foreach ($bugs_value as $key => $value) {
 }
 echo '</ul>';
 
-echo 'Total: ' . array_sum($bugs_value);
+echo 'Total: ' . array_sum($bugs);
 
 // TODO
 // negative values (riskyness, open regressions)
