@@ -102,8 +102,7 @@ $karma = [
         'regression' => 1,
         'perf'       => 1,
     ],
-    'duplicates' => 2,
-
+    'duplicates' => 2, // Points for each duplicate
 ];
 
 $bugs = [];
@@ -149,3 +148,55 @@ echo 'Total: ' . array_sum($bugs);
 // negative values (riskyness, open regressions)
 // add votes
 //
+?>
+<h3> Current scores:</h3>
+<pre>
+$priority = [
+    'P1' => 4,
+    'P2' => 3,
+    'P3' => 2,
+    'P4' => 1,
+    '--' => 0,
+];
+
+$severity = [
+    'S1' => 8,
+    'S2' => 4,
+    'S3' => 2,
+    'S4' => 1,
+    '--' => 0,
+];
+
+$keywords = [
+    'topcrash'   => 5,
+    'dataloss'   => 3,
+    'crash'      => 1,
+    'regression' => 1,
+    'perf'       => 1,
+];
+
+$karma = [
+    'priority' => [
+        'P1' => 4,
+        'P2' => 3,
+        'P3' => 2,
+        'P4' => 1,
+        '--' => 0,
+    ],
+    'severity' => [
+        'S1' => 8,
+        'S2' => 4,
+        'S3' => 2,
+        'S4' => 1,
+        '--' => 0,
+    ],
+    'keywords' => [
+        'topcrash'   => 5,
+        'dataloss'   => 3,
+        'crash'      => 1,
+        'regression' => 1,
+        'perf'       => 1,
+    ],
+    'duplicates' => 2, // Points for each duplicate
+];
+
