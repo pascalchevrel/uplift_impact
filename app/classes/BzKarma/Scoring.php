@@ -90,22 +90,23 @@ class Scoring
         }
 
         $impact = [
-            'priority'    => $this->karma['priority'][$this->bugsData[$bug]['priority']],
-            'severity'    => $this->karma['severity'][$this->bugsData[$bug]['severity']],
+            // Severity and Priority fields had other values in the past like normal, trivial…
+            // We ignore these old values for now.
+            'priority'    => $this->karma['priority'][$this->bugsData[$bug]['priority']] ?? 0,
+            'severity'    => $this->karma['severity'][$this->bugsData[$bug]['severity']] ?? 0,
             'keywords'    => $keywords_value,
             'duplicates'  => count($this->bugsData[$bug]['duplicates']) * $this->karma['duplicates'],
             'regressions' => count($this->bugsData[$bug]['regressions']) * $this->karma['regressions'],
             'tracking_firefox'. Train::NIGHTLY->value =>
-                $this->karma['tracking_firefox_nightly'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value]],
+                $this->karma['tracking_firefox_nightly'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value]] ?? 0,
             'tracking_firefox'. Train::BETA->value =>
-                $this->karma['tracking_firefox_beta'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::BETA->value]],
+                $this->karma['tracking_firefox_beta'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::BETA->value]] ?? 0,
             'tracking_firefox'. Train::RELEASE->value =>
-                $this->karma['tracking_firefox_release'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::RELEASE->value]],
+                $this->karma['tracking_firefox_release'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::RELEASE->value]] ?? 0,
         ];
 
         return $impact;
     }
-
 
     public function getBugScore(int $bug): int {
         return array_sum($this->getBugScoreDetails($bug));
