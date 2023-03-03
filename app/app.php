@@ -7,7 +7,7 @@ use BzKarma\{Scoring, Utils, Train};
 include __DIR__ . '/classes/BzKarma/Scoring.php';
 include __DIR__ . '/classes/BzKarma/Utils.php';
 
-$bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id'])
+$bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] !== 0
     ? Utils::getBugsFromString($_GET['bug_id'])
     // 110.0.1 dot release uplifts below
     : [1814780, 1812120, 1805177, 1814696, 1814537, 1813991, 1816160, 1816001, 1816214, 1816191, 1815309, 1816943, 1813498, 1815843, 1763990, 1799684, 1817269];
