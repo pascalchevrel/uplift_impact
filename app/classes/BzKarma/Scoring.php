@@ -35,23 +35,24 @@ class Scoring
             'perf'       => 1,
         ],
         'duplicates' => 2, // Points for each duplicate
+        'regressions' => -2, // Points for each duplicate
         'tracking_firefox_nightly' => [
-            'blocking' => 50,
-            '+' => 8,
+            'blocking' => 100,
+            '+' => 4,
             '?' => 2,
             '-' => 0,
             '---' => 0,
         ],
         'tracking_firefox_beta' => [
-            'blocking' => 50,
-            '+' => 8,
+            'blocking' => 100,
+            '+' => 4,
             '?' => 2,
             '-' => 0,
             '---' => 0,
         ],
         'tracking_firefox_release' => [
-            'blocking' => 50,
-            '+' => 8,
+            'blocking' => 100,
+            '+' => 4,
             '?' => 2,
             '-' => 0,
             '---' => 0,
@@ -89,10 +90,11 @@ class Scoring
         }
 
         $impact = [
-            'priority'   => $this->karma['priority'][$this->bugsData[$bug]['priority']],
-            'severity'   => $this->karma['severity'][$this->bugsData[$bug]['severity']],
-            'keywords'   => $keywords_value,
-            'duplicates' => count($this->bugsData[$bug]['duplicates']) * $this->karma['duplicates'],
+            'priority'    => $this->karma['priority'][$this->bugsData[$bug]['priority']],
+            'severity'    => $this->karma['severity'][$this->bugsData[$bug]['severity']],
+            'keywords'    => $keywords_value,
+            'duplicates'  => count($this->bugsData[$bug]['duplicates']) * $this->karma['duplicates'],
+            'regressions' => count($this->bugsData[$bug]['regressions']) * $this->karma['regressions'],
             'tracking_firefox'. Train::NIGHTLY->value =>
                 $this->karma['tracking_firefox_nightly'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value]],
             'tracking_firefox'. Train::BETA->value =>

@@ -16,6 +16,7 @@ $bug_list_details = Utils::getBugDetails(
     $bugs,
     [
         'id', 'summary', 'priority', 'severity', 'keywords', 'duplicates',
+        'regressions',
         'cf_tracking_firefox' . Train::NIGHTLY->value,
         'cf_tracking_firefox' . Train::BETA->value,
         'cf_tracking_firefox' . Train::RELEASE->value,
