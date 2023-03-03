@@ -37,31 +37,34 @@ class Scoring
             'regression' => 1,
             'perf'       => 1,
         ],
-        'duplicates' => 2, // Points for each duplicate
-        'regressions' => -2, // Points for each duplicate
+        'duplicates'  =>  2, // Points for each duplicate
+        'regressions' => -2, // Negative Points for regressions
         'tracking_firefox_nightly' => [
             'blocking' => 100,
-            '+' => 4,
-            '?' => 2,
-            '-' => 0,
-            '---' => 0,
+            '+'        => 4,
+            '?'        => 2,
+            '-'        => 0,
+            '---'      => 0,
         ],
         'tracking_firefox_beta' => [
             'blocking' => 100,
-            '+' => 4,
-            '?' => 2,
-            '-' => 0,
-            '---' => 0,
+            '+'        => 4,
+            '?'        => 2,
+            '-'        => 0,
+            '---'      => 0,
         ],
         'tracking_firefox_release' => [
             'blocking' => 100,
-            '+' => 4,
-            '?' => 2,
-            '-' => 0,
-            '---' => 0,
+            '+'        => 4,
+            '?'        => 2,
+            '-'        => 0,
+            '---'      => 0,
         ],
     ];
 
+    /*
+        This array stores the bug data provided by the Bugzilla rest API
+     */
     public array $bugsData;
 
     public function __construct(array $bugsData)
@@ -96,13 +99,19 @@ class Scoring
         }
 
         $impact = [
-            // Severity and Priority fields had other values in the past like normal, trivial…
-            // We ignore these old values for now.
+
+            /*
+                Severity and Priority fields had other values in the past like normal, trivial…
+                We ignore these values for now.
+             */
             'priority'    => $this->karma['priority'][$this->bugsData[$bug]['priority']] ?? 0,
             'severity'    => $this->karma['severity'][$this->bugsData[$bug]['severity']] ?? 0,
             'keywords'    => $keywords_value,
             'duplicates'  => count($this->bugsData[$bug]['duplicates']) * $this->karma['duplicates'],
             'regressions' => count($this->bugsData[$bug]['regressions']) * $this->karma['regressions'],
+            /*
+                If a bug is tracked across all our releases, it is likely higher value
+             */
             'tracking_firefox'. Train::NIGHTLY->value =>
                 $this->karma['tracking_firefox_nightly'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value]] ?? 0,
             'tracking_firefox'. Train::BETA->value =>
