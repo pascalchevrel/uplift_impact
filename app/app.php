@@ -18,11 +18,26 @@ $bug_list_details = Utils::getBugDetails(
     ['id', 'summary', 'priority', 'severity', 'keywords', 'duplicates', 'cf_tracking_firefox111']
 );
 
+$bugs = new Scoring($bug_list_details);
+
+if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
+    switch ((int) $_GET['scenario']) {
+        case 2:
+            $bugs->karma['priority']['P1'] = 10;
+            break;
+
+        default:
+            break;
+    }
+}
+
+
+
+
 // echo '<pre>';
 // var_dump($bug_list_details);
 // echo '</pre>';
 
-$bugs = new Scoring($bug_list_details);
 
 echo '
 <h4 style="font-weight:normal">
