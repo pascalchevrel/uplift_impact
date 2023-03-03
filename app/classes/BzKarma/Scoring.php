@@ -12,6 +12,9 @@ enum Train: string {
 
 class Scoring
 {
+    /*
+        This array contains our uplift value business logic.
+     */
     public array $karma = [
         'priority' => [
             'P1' => 4,
@@ -79,6 +82,9 @@ class Scoring
         return $bugs;
     }
 
+    /*
+        This is the method that contains the business logic.
+     */
     public function getBugScoreDetails(int $bug): array
     {
         $keywords_value = 0;
