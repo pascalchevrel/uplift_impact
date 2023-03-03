@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-use BzKarma\{Scoring, Utils};
+use BzKarma\{Scoring, Utils, Train};
 
 include __DIR__ . '/classes/BzKarma/Scoring.php';
 include __DIR__ . '/classes/BzKarma/Utils.php';
-
 
 $bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id'])
     ? Utils::getBugsFromString($_GET['bug_id'])
@@ -15,7 +14,12 @@ $bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id'])
 
 $bug_list_details = Utils::getBugDetails(
     $bugs,
-    ['id', 'summary', 'priority', 'severity', 'keywords', 'duplicates', 'cf_tracking_firefox111']
+    [
+        'id', 'summary', 'priority', 'severity', 'keywords', 'duplicates',
+        'cf_tracking_firefox' . Train::NIGHTLY->value,
+        'cf_tracking_firefox' . Train::BETA->value,
+        'cf_tracking_firefox' . Train::RELEASE->value,
+    ]
 );
 
 $bugs = new Scoring($bug_list_details);
@@ -30,15 +34,13 @@ if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
             break;
     }
 }
+/*
 
+echo '<pre>';
+var_dump($bug_list_details);
+echo '</pre>';
 
-
-
-// echo '<pre>';
-// var_dump($bug_list_details);
-// echo '</pre>';
-
-
+*/
 echo '
 <h4 style="font-weight:normal">
     Append

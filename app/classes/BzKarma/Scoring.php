@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace BzKarma;
 
+enum Train: string {
+    case NIGHTLY = '112';
+    case BETA    = '111';
+    case RELEASE = '110';
+}
+
 class Scoring
 {
     public array $karma = [
@@ -29,20 +35,41 @@ class Scoring
             'perf'       => 1,
         ],
         'duplicates' => 2, // Points for each duplicate
+        'tracking_firefox_nightly' => [
+            'blocking' => 50,
+            '+' => 8,
+            '?' => 2,
+            '-' => 0,
+            '---' => 0,
+        ],
+        'tracking_firefox_beta' => [
+            'blocking' => 50,
+            '+' => 8,
+            '?' => 2,
+            '-' => 0,
+            '---' => 0,
+        ],
+        'tracking_firefox_release' => [
+            'blocking' => 50,
+            '+' => 8,
+            '?' => 2,
+            '-' => 0,
+            '---' => 0,
+        ],
     ];
 
-    public array $bugDetails;
+    public array $bugsData;
 
-    public function __construct(array $bugDetails)
+    public function __construct(array $bugsData)
     {
-        $this->bugDetails = $bugDetails;
+        $this->bugsData = $bugsData;
     }
 
     public function getAllBugsScores(): array
     {
         $bugs = [];
 
-        foreach ($this->bugDetails as $bug => $details) {
+        foreach ($this->bugsData as $bug => $details) {
            $bugs[$bug] = $this->getBugScore($bug);
         }
 
@@ -55,17 +82,23 @@ class Scoring
     {
         $keywords_value = 0;
 
-        foreach ($this->bugDetails[$bug]['keywords'] as $keyword) {
+        foreach ($this->bugsData[$bug]['keywords'] as $keyword) {
             if (array_key_exists($keyword, $this->karma['keywords'])) {
                 $keywords_value += $this->karma['keywords'][$keyword];
             }
         }
 
         $impact = [
-            'priority'   => $this->karma['priority'][$this->bugDetails[$bug]['priority']],
-            'severity'   => $this->karma['severity'][$this->bugDetails[$bug]['severity']],
+            'priority'   => $this->karma['priority'][$this->bugsData[$bug]['priority']],
+            'severity'   => $this->karma['severity'][$this->bugsData[$bug]['severity']],
             'keywords'   => $keywords_value,
-            'duplicates' => count($this->bugDetails[$bug]['duplicates']) * $this->karma['duplicates'],
+            'duplicates' => count($this->bugsData[$bug]['duplicates']) * $this->karma['duplicates'],
+            'tracking_firefox'. Train::NIGHTLY->value =>
+                $this->karma['tracking_firefox_nightly'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value]],
+            'tracking_firefox'. Train::BETA->value =>
+                $this->karma['tracking_firefox_beta'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::BETA->value]],
+            'tracking_firefox'. Train::RELEASE->value =>
+                $this->karma['tracking_firefox_release'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::RELEASE->value]],
         ];
 
         return $impact;
