@@ -34,15 +34,23 @@ echo '
 </h4>';
 
 echo '<ul>';
-foreach ($bugs->getAllScores() as $key => $value) {
+foreach ($bugs->getAllBugsScores() as $key => $value) {
     echo '<li>';
     echo 'Bug <a href="https://bugzilla.mozilla.org/' . $key . '" title="' . $bug_list_details[(int) $key]['summary']. '">' . $key . '</a> : ' . $value;
+        echo '<ul>';
+            echo '<li>';
+            echo '<pre>';
+            print_r($bugs->getBugScoreDetails($key));
+            echo '</pre>';
+            echo '</li>';
+        echo '</ul>';
     echo '</li>';
-    // code...
 }
 echo '</ul>';
 
-echo 'Total: ' . array_sum($bugs->getAllScores());
+echo 'Total: ' . array_sum($bugs->getAllBugsScores());
+
+
 
 // TODO
 // negative values (riskyness, open regressions)
@@ -52,3 +60,5 @@ echo 'Total: ' . array_sum($bugs->getAllScores());
 
 <h3> Current scores:</h3>
 <pre><?php print_r($bugs->karma); ?></pre>
+
+

@@ -38,32 +38,12 @@ class Scoring
         $this->bugDetails = $bugDetails;
     }
 
-    public function getAllScores(): array
+    public function getAllBugsScores(): array
     {
         $bugs = [];
 
-        foreach ($this->bugDetails as $bug) {
-            $id = $bug['id'];
-
-            $bugs[$id] = 0;
-            $bugs[$id] += $this->karma['severity'][$bug['severity']];
-
-            foreach ($bug['keywords'] as $keyword) {
-                if (array_key_exists($keyword, $this->karma['keywords'])) {
-                    $bugs[$id] += $this->karma['keywords'][$keyword];
-                }
-            }
-
-            if (isset($bug['cf_tracking_firefox110']) && $bug['cf_tracking_firefox110'] === '+') {
-                $bugs[$id] += 2;
-            }
-
-            if (isset($bug['cf_tracking_firefox110']) && $bug['cf_tracking_firefox110'] === 'blocking') {
-                $bugs[$id] += 100;
-            }
-
-            $bugs[$id] += count($bug['duplicates']) * 2;
-
+        foreach ($this->bugDetails as $bug => $details) {
+           $bugs[$bug] = $this->getBugScore($bug);
         }
 
         arsort($bugs);
@@ -71,32 +51,29 @@ class Scoring
         return $bugs;
     }
 
-    public function getScoreDetails(array $bugDetails): int
+    public function getBugScoreDetails(int $bug): array
     {
-        $value = 0;
-        $value += $this->karma['severity'][$bugDetails['severity']];
+        $keywords_value = 0;
 
-        foreach ($bugDetails['keywords'] as $keyword) {
+        foreach ($this->bugDetails[$bug]['keywords'] as $keyword) {
             if (array_key_exists($keyword, $this->karma['keywords'])) {
-                $value += $this->karma['keywords'][$keyword];
+                $keywords_value += $this->karma['keywords'][$keyword];
             }
         }
 
-        // if (isset($bug['cf_tracking_firefox110']) && $bug['cf_tracking_firefox110'] === '+') {
-        //     $bugs[$id] += 2;
-        // }
+        $impact = [
+            'priority'   => $this->karma['priority'][$this->bugDetails[$bug]['priority']],
+            'severity'   => $this->karma['severity'][$this->bugDetails[$bug]['severity']],
+            'keywords'   => $keywords_value,
+            'duplicates' => count($this->bugDetails[$bug]['duplicates']) * $this->karma['duplicates'],
+        ];
 
-        // if (isset($bug['cf_tracking_firefox110']) && $bug['cf_tracking_firefox110'] === 'blocking') {
-        //     $bugs[$id] += 100;
-        // }
-
-        $value += count($bugDetails['duplicates']) * 2;
-
-        return $value;
+        return $impact;
     }
-    public function getScore(int $bugNumber): int
-    {
 
+
+    public function getBugScore(int $bug): int {
+        return array_sum($this->getBugScoreDetails($bug));
     }
 }
 
