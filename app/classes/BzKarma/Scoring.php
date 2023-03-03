@@ -30,7 +30,7 @@ class Scoring
             'S3'  => 2,
             'S4'  => 1,
             'N/A' => 0,
-            '--' = > 0,
+            '--'  => 0,
         ],
         'keywords' => [
             'topcrash-startup' => 10,
@@ -62,6 +62,12 @@ class Scoring
             '?'        => 2,
             '-'        => 0,
             '---'      => 0,
+        ],
+        'webcompat' => [
+            'P1' => 5,
+            'P2' => 4,
+            'P3' => 3,
+            '---' => 0,
         ],
     ];
 
@@ -112,6 +118,7 @@ class Scoring
             'keywords'    => $keywords_value,
             'duplicates'  => count($this->bugsData[$bug]['duplicates']) * $this->karma['duplicates'],
             'regressions' => count($this->bugsData[$bug]['regressions']) * $this->karma['regressions'],
+            'webcompat'   => $this->karma['webcompat'][$this->bugsData[$bug]['cf_webcompat_priority']] ?? 0,
             /*
                 If a bug is tracked across all our releases, it is likely higher value
              */

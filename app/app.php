@@ -15,8 +15,8 @@ $bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_i
 $bug_list_details = Utils::getBugDetails(
     $bugs,
     [
-        'id', 'summary', 'priority', 'severity', 'keywords', 'duplicates',
-        'regressions',
+        'id', 'summary', 'priority', 'severity', 'keywords',
+         'duplicates', 'regressions', 'cf_webcompat_priority',
         'cf_tracking_firefox' . Train::NIGHTLY->value,
         'cf_tracking_firefox' . Train::BETA->value,
         'cf_tracking_firefox' . Train::RELEASE->value,
@@ -35,13 +35,13 @@ if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
             break;
     }
 }
-/*
 
-echo '<pre>';
-var_dump($bug_list_details);
-echo '</pre>';
 
-*/
+// echo '<pre>';
+// var_dump($bug_list_details);
+// echo '</pre>';
+
+
 echo '
 <h4 style="font-weight:normal">
     Append
