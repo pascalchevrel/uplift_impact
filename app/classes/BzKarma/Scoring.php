@@ -17,25 +17,28 @@ class Scoring
      */
     public array $karma = [
         'priority' => [
-            'P1' => 4,
-            'P2' => 3,
-            'P3' => 2,
-            'P4' => 1,
+            'P1' => 5,
+            'P2' => 4,
+            'P3' => 3,
+            'P4' => 2,
+            'P5' => 1,
             '--' => 0,
         ],
         'severity' => [
-            'S1' => 8,
-            'S2' => 4,
-            'S3' => 2,
-            'S4' => 1,
-            '--' => 0,
+            'S1'  => 8,
+            'S2'  => 4,
+            'S3'  => 2,
+            'S4'  => 1,
+            'N/A' => 0,
+            '--' = > 0,
         ],
         'keywords' => [
-            'topcrash'   => 5,
-            'dataloss'   => 3,
-            'crash'      => 1,
-            'regression' => 1,
-            'perf'       => 1,
+            'topcrash-startup' => 10,
+            'topcrash'         => 5,
+            'dataloss'         => 3,
+            'crash'            => 1,
+            'regression'       => 1,
+            'perf'             => 1,
         ],
         'duplicates'  =>  2, // Points for each duplicate
         'regressions' => -2, // Negative Points for regressions
