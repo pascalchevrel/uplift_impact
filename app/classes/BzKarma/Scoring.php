@@ -104,6 +104,23 @@ class Scoring
      */
     public function getBugScoreDetails(int $bug): array
     {
+        /*
+            If we don't have the bug in store (private bugs), return 0.
+         */
+        if (! isset($this->bugsData[$bug])) {
+            return  [
+                'priority'    => 0,
+                'severity'    => 0,
+                'keywords'    => 0,
+                'duplicates'  => 0,
+                'regressions' => 0,
+                'webcompat'   => 0,
+                'tracking_firefox'. Train::NIGHTLY->value => 0,
+                'tracking_firefox'. Train::BETA->value    => 0,
+                'tracking_firefox'. Train::RELEASE->value => 0,
+            ];
+        }
+
         $keywords_value = 0;
 
         foreach ($this->bugsData[$bug]['keywords'] as $keyword) {
@@ -120,6 +137,16 @@ class Scoring
             ? $this->karma['webcompat'][$this->bugsData[$bug]['cf_webcompat_priority']]
             : 0;
 
+        $nightly = isset($this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value])
+            ? $this->karma['tracking_firefox_nightly'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value]]
+            : 0;
+        $beta = isset($this->bugsData[$bug]['cf_tracking_firefox'. Train::BETA->value])
+            ? $this->karma['tracking_firefox_beta'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::BETA->value]]
+            : 0;
+        $release = isset($this->bugsData[$bug]['cf_tracking_firefox'. Train::RELEASE->value])
+            ? $this->karma['tracking_firefox_release'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::RELEASE->value]]
+            : 0;
+
         $impact = [
             /*
                 Severity and Priority fields had other values in the past like normal, trivial…
@@ -134,12 +161,9 @@ class Scoring
             /*
                 If a bug is tracked across all our releases, it is likely higher value
              */
-            'tracking_firefox'. Train::NIGHTLY->value =>
-                $this->karma['tracking_firefox_nightly'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value]] ?? 0,
-            'tracking_firefox'. Train::BETA->value =>
-                $this->karma['tracking_firefox_beta'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::BETA->value]] ?? 0,
-            'tracking_firefox'. Train::RELEASE->value =>
-                $this->karma['tracking_firefox_release'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::RELEASE->value]] ?? 0,
+            'tracking_firefox'. Train::NIGHTLY->value => $nightly,
+            'tracking_firefox'. Train::BETA->value    => $beta,
+            'tracking_firefox'. Train::RELEASE->value => $release,
         ];
 
         return $impact;
