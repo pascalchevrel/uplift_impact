@@ -107,8 +107,15 @@ class Scoring
             }
         }
 
-        $impact = [
+        /*
+            The cf_webcompat_priority field is not available for all components so we need
+            to check for its availability and we set it to a 0 karma if it doesn't exist.
+         */
+        $webcompat = isset($this->bugsData[$bug]['cf_webcompat_priority'])
+            ? $this->karma['webcompat'][$this->bugsData[$bug]['cf_webcompat_priority']]
+            : 0;
 
+        $impact = [
             /*
                 Severity and Priority fields had other values in the past like normal, trivial…
                 We ignore these values for now.
@@ -118,7 +125,7 @@ class Scoring
             'keywords'    => $keywords_value,
             'duplicates'  => count($this->bugsData[$bug]['duplicates']) * $this->karma['duplicates'],
             'regressions' => count($this->bugsData[$bug]['regressions']) * $this->karma['regressions'],
-            'webcompat'   => $this->karma['webcompat'][$this->bugsData[$bug]['cf_webcompat_priority']] ?? 0,
+            'webcompat'   => $webcompat,
             /*
                 If a bug is tracked across all our releases, it is likely higher value
              */
