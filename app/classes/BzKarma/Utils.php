@@ -10,7 +10,7 @@ class Utils
     /**
      * Transform a string of bugs into a list of valid integers
      *
-     *  @return array<int> $bugs
+     *  @return array<int>
      */
     public static function getBugsFromString(string $commaSeparatedList, string $separator = ','): array
     {
@@ -54,22 +54,5 @@ class Utils
         $data = array_combine(array_column($data, 'id'), $data);
 
         return $data;
-    }
-
-
-    /**
-     * Utility function to output Json data
-     * @param array<mixed> $data
-     */
-    public static function renderJson(array $data): void
-    {
-        // Output a JSON or JSONP representation of search results
-        $json = new Json();
-
-        if (array_key_exists('error', $data)) {
-            print_r($json->outputError($data['error']));
-        } else {
-            print_r($json->outputContent($data, $_GET['callback'] ?? false));
-        }
     }
 }
