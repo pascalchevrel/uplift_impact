@@ -17,6 +17,9 @@ class Utils
         // Convert the list of comma-separated bug numbers to an array
         $bugs = explode($separator, $commaSeparatedList);
 
+        // Remove extra whitespaces
+        $bugs = array_map('trim', $bugs);
+
         // Filter out all strings that can't be turned into valid bug numbers
         $bugs = array_filter($bugs, 'ctype_digit');
 
