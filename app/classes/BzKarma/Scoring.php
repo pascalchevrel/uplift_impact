@@ -73,6 +73,15 @@ class Scoring
 
     /*
         This array stores the bug data provided by the Bugzilla rest API
+        The list of fields retrieved are:
+
+        id, summary, priority, severity, keywords, duplicates, regressions, cf_webcompat_priority,
+        cf_tracking_firefox_nightly, cf_tracking_firefox_beta, cf_tracking_firefox_release
+
+        The fields actually retrieved for tracking requests have release numbers, ex:
+        cf_tracking_firefox112, cf_tracking_firefox111, cf_tracking_firefox110
+
+        See Bug 1819638 - JSON API should support release aliases (_nightly / _beta / _release) for the cf_tracking_firefoxXXX and cf_status_firefoxXXX fields - https://bugzil.la/1819638
      */
     public array $bugsData;
 
