@@ -5,6 +5,7 @@ declare(strict_types=1);
 use BzKarma\{Scoring, Utils, Train};
 
 include __DIR__ . '/classes/BzKarma/Scoring.php';
+include __DIR__ . '/classes/BzKarma/Train.php';
 include __DIR__ . '/classes/BzKarma/Utils.php';
 
 $bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] !== 0
