@@ -81,6 +81,9 @@ class Scoring
      */
     public array $bugsData;
 
+    /**
+     * We work from a dataset provided by the Bugzilla rest API
+     */
     public function __construct(array $bugsData)
     {
         $this->bugsData = $bugsData;
@@ -94,6 +97,7 @@ class Scoring
            $bugs[$bug] = $this->getBugScore($bug);
         }
 
+        // We sort them in reverse order to list best nugs first
         arsort($bugs);
 
         return $bugs;
@@ -106,6 +110,7 @@ class Scoring
     {
         /*
             If we don't have the bug in store (private bugs), return 0.
+            This part of the logic is only needed when using the external public API.
          */
         if (! isset($this->bugsData[$bug])) {
             return  [
@@ -123,6 +128,10 @@ class Scoring
 
         $keywords_value = 0;
 
+        /*
+            We loop through all the bug keywords and check if they have an internal value.
+            Then we add the points they have to the total for keywords.
+         */
         foreach ($this->bugsData[$bug]['keywords'] as $keyword) {
             if (array_key_exists($keyword, $this->karma['keywords'])) {
                 $keywords_value += $this->karma['keywords'][$keyword];
@@ -130,22 +139,19 @@ class Scoring
         }
 
         /*
-            The cf_webcompat_priority field is not available for all components so we need
-            to check for its availability and we set it to a 0 karma if it doesn't exist.
+            Some fields are not available for all components so we need
+            to check for their availability and we set it to a 0 karma if it doesn't exist.
          */
-        $webcompat = isset($this->bugsData[$bug]['cf_webcompat_priority'])
-            ? $this->karma['webcompat'][$this->bugsData[$bug]['cf_webcompat_priority']]
-            : 0;
+        $value = function (int $bug, string $bz_field, string $local_field): int {
+            return isset($this->bugsData[$bug][$bz_field])
+                ? $this->karma[$local_field][$this->bugsData[$bug][$bz_field]]
+                : 0;
+        };
 
-        $nightly = isset($this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value])
-            ? $this->karma['tracking_firefox_nightly'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::NIGHTLY->value]]
-            : 0;
-        $beta = isset($this->bugsData[$bug]['cf_tracking_firefox'. Train::BETA->value])
-            ? $this->karma['tracking_firefox_beta'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::BETA->value]]
-            : 0;
-        $release = isset($this->bugsData[$bug]['cf_tracking_firefox'. Train::RELEASE->value])
-            ? $this->karma['tracking_firefox_release'][$this->bugsData[$bug]['cf_tracking_firefox'. Train::RELEASE->value]]
-            : 0;
+        $webcompat = $value($bug, 'cf_webcompat_priority', 'webcompat');
+        $nightly   = $value($bug, 'cf_tracking_firefox'. Train::NIGHTLY->value, 'tracking_firefox_nightly');
+        $beta      = $value($bug, 'cf_tracking_firefox'. Train::BETA->value, 'tracking_firefox_beta');
+        $release   = $value($bug, 'cf_tracking_firefox'. Train::RELEASE->value, 'tracking_firefox_release');
 
         $impact = [
             /*
@@ -158,6 +164,7 @@ class Scoring
             'duplicates'  => count($this->bugsData[$bug]['duplicates']) * $this->karma['duplicates'],
             'regressions' => count($this->bugsData[$bug]['regressions']) * $this->karma['regressions'],
             'webcompat'   => $webcompat,
+
             /*
                 If a bug is tracked across all our releases, it is likely higher value
              */
