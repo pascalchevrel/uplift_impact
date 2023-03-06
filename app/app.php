@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use BzKarma\{Scoring, Utils, Train};
+use BzKarma\{Scoring, Train};
 
 // We always work with UTF8 encoding
 mb_internal_encoding('UTF-8');
@@ -11,12 +11,9 @@ mb_internal_encoding('UTF-8');
 date_default_timezone_set('UTC');
 
 require __DIR__ . '/../vendor/autoload.php';
+// include __DIR__ . '/classes/Utils.php';
 
 
-/*include __DIR__ . '/classes/BzKarma/Scoring.php';
-include __DIR__ . '/classes/BzKarma/Train.php';
-include __DIR__ . '/classes/BzKarma/Utils.php';
-*/
 $bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] !== 0
     ? Utils::getBugsFromString($_GET['bug_id'])
     // 110.0.1 dot release uplifts below

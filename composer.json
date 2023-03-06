@@ -9,7 +9,14 @@
             "no-api": true
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "": "app/classes/"
+        }
+    },
     "require": {
         "pchevrel/bzkarma": "dev-main"
     }
 }
+
+
