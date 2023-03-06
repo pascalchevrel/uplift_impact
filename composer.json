@@ -1,0 +1,15 @@
+{
+    "license": "MPL-2.0",
+    "name": "pascalchevrel/releaseinsights",
+    "description": "Release Insights / Firefox Trains Dashboard",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/pascalchevrel/bzkarma/",
+            "no-api": true
+        }
+    ],
+    "require": {
+        "pchevrel/bzkarma": "dev-main"
+    }
+}
