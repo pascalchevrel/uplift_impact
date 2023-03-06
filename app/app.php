@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use BzKarma\Scoring;
-use Train;
 
 // We always work with UTF8 encoding
 mb_internal_encoding('UTF-8');
