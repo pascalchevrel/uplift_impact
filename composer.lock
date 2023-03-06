@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pascalchevrel/bzkarma/",
-                "reference": "f4549d62bfa95269c091c5edecee2301a1dc3041"
+                "reference": "3a3cb3616c6ccb33ce522f127631f4b5680abd70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pascalchevrel/bzkarma/zipball/f4549d62bfa95269c091c5edecee2301a1dc3041",
-                "reference": "f4549d62bfa95269c091c5edecee2301a1dc3041",
+                "url": "https://api.github.com/repos/pascalchevrel/bzkarma/zipball/3a3cb3616c6ccb33ce522f127631f4b5680abd70",
+                "reference": "3a3cb3616c6ccb33ce522f127631f4b5680abd70",
                 "shasum": ""
             },
             "default-branch": true,
@@ -31,7 +31,7 @@
                 "MIT"
             ],
             "description": "Uplift scoring library for bugzilla.mozilla.org",
-            "time": "2023-03-06T10:27:50+00:00"
+            "time": "2023-03-06T13:51:47+00:00"
         }
     ],
     "packages-dev": [],

@@ -12,7 +12,6 @@ class Utils
      */
     public static function getBugsFromString(string $commaSeparatedList, string $separator = ','): array
     {
-        error_log(" qqqqqqqqqqqqqqqqqqqqqqqqqqaa");
         // Convert the list of comma-separated bug numbers to an array
         $bugs = explode($separator, $commaSeparatedList);
 

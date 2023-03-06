@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use BzKarma\{Scoring, Train};
+use BzKarma\Scoring;
+use Train;
 
 // We always work with UTF8 encoding
 mb_internal_encoding('UTF-8');
@@ -30,7 +31,7 @@ $bug_list_details = Utils::getBugDetails(
     ]
 );
 
-$bugs = new Scoring($bug_list_details);
+$bugs = new Scoring($bug_list_details, 110);
 
 if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
     switch ((int) $_GET['scenario']) {
