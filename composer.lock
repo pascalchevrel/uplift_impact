@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pascalchevrel/bzkarma/",
-                "reference": "bb59700e98f79568407281d60b7b89b774b34bce"
+                "reference": "cc2c3500a02e4115efc3f750b92448cd858efa7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pascalchevrel/bzkarma/zipball/bb59700e98f79568407281d60b7b89b774b34bce",
-                "reference": "bb59700e98f79568407281d60b7b89b774b34bce",
+                "url": "https://api.github.com/repos/pascalchevrel/bzkarma/zipball/cc2c3500a02e4115efc3f750b92448cd858efa7d",
+                "reference": "cc2c3500a02e4115efc3f750b92448cd858efa7d",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "bugzilla",
                 "firefox"
             ],
-            "time": "2023-03-15T16:45:10+00:00"
+            "time": "2023-03-15T17:20:24+00:00"
         }
     ],
     "packages-dev": [],
