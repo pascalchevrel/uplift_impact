@@ -12,13 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pascalchevrel/bzkarma/",
-                "reference": "3a3cb3616c6ccb33ce522f127631f4b5680abd70"
+                "reference": "bb59700e98f79568407281d60b7b89b774b34bce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pascalchevrel/bzkarma/zipball/3a3cb3616c6ccb33ce522f127631f4b5680abd70",
-                "reference": "3a3cb3616c6ccb33ce522f127631f4b5680abd70",
+                "url": "https://api.github.com/repos/pascalchevrel/bzkarma/zipball/bb59700e98f79568407281d60b7b89b774b34bce",
+                "reference": "bb59700e98f79568407281d60b7b89b774b34bce",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
             },
             "default-branch": true,
             "type": "library",
@@ -30,8 +33,18 @@
             "license": [
                 "MIT"
             ],
+            "authors": [
+                {
+                    "name": "Pascal Chevrel",
+                    "role": "Developer"
+                }
+            ],
             "description": "Uplift scoring library for bugzilla.mozilla.org",
-            "time": "2023-03-06T13:51:47+00:00"
+            "keywords": [
+                "bugzilla",
+                "firefox"
+            ],
+            "time": "2023-03-15T16:45:10+00:00"
         }
     ],
     "packages-dev": [],

@@ -30,10 +30,12 @@ $bug_list_details = Utils::getBugDetails(
         'cf_status_firefox' . Train::NIGHTLY->value,
         'cf_status_firefox' . Train::BETA->value,
         'cf_status_firefox' . Train::RELEASE->value,
+        'cf_performance_impact'
     ]
 );
 
-$bugs = new Scoring($bug_list_details, 110);
+$bugs = new Scoring($bug_list_details, 111);
+// $bugs->scoreNightlyOnly(false);
 
 if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
     switch ((int) $_GET['scenario']) {
