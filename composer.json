@@ -1,7 +1,7 @@
 {
     "license": "MPL-2.0",
     "name": "pascalchevrel/releaseinsights",
-    "description": "Release Insights / Firefox Trains Dashboard",
+    "description": "BzKarma",
     "repositories": [
         {
             "type": "vcs",
@@ -15,8 +15,17 @@
         }
     },
     "require": {
-        "pchevrel/bzkarma": "dev-main"
+        "pchevrel/bzkarma": "dev-main",
+        "twig/twig": "^3.5",
+        "twbs/bootstrap-icons": "^1.8",
+        "twbs/bootstrap": "^5.2"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "rm -rf public/assets/bootstrap",
+            "cp -r vendor/twbs/bootstrap/dist public/assets/bootstrap",
+            "cp vendor/twbs/bootstrap-icons/font/bootstrap-icons.css public/assets/bootstrap/css/",
+            "cp -r vendor/twbs/bootstrap-icons/font/fonts/ public/assets/bootstrap/css/"
+        ]
     }
 }
-
-

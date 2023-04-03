@@ -4,15 +4,26 @@ declare(strict_types=1);
 
 use BzKarma\Scoring;
 
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+
 // We always work with UTF8 encoding
 mb_internal_encoding('UTF-8');
 
 // Make sure we have a timezone set
 date_default_timezone_set('UTC');
 
-require __DIR__ . '/../vendor/autoload.php';
-// include __DIR__ . '/classes/Utils.php';
 
+define('INSTALL_ROOT', dirname(__DIR__, 1) . '/');
+// Application globals paths
+const TEMPLATES = INSTALL_ROOT . 'app/templates/';
+
+// Autoloading of classes (both /vendor/ and /app/classes/)
+require_once INSTALL_ROOT . 'vendor/autoload.php';
+
+// Initialize our Templating system
+$twig_loader = new FilesystemLoader(TEMPLATES);
+$twig = new Environment($twig_loader);
 
 $bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] !== 0
     ? Utils::getBugsFromString($_GET['bug_id'])
@@ -35,7 +46,6 @@ $bug_list_details = Utils::getBugDetails(
 );
 
 $bugs = new Scoring($bug_list_details, 111);
-// $bugs->scoreNightlyOnly(false);
 
 if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
     switch ((int) $_GET['scenario']) {
@@ -48,46 +58,18 @@ if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
     }
 }
 
-
-// echo '<pre>';
-// var_dump($bug_list_details);
-// echo '</pre>';
-
-echo '
-<h4 style="font-weight:normal">
-    Append
-    <code>
-        ?bug_id=1817192,1811873,1816574,1812680,1814961,1794577,1788004,1817518,1812447
-    </code>
-     to the url to test your bugs (comma separated bug numbers)
-</h4>';
-
-echo '<ul>';
+$details = [];
 foreach ($bugs->getAllBugsScores() as $key => $value) {
-    echo '<li>';
-    echo 'Bug <a href="https://bugzilla.mozilla.org/' . $key . '" title="' . $bug_list_details[(int) $key]['summary']. '">' . $key . '</a> : ' . $value;
-        echo '<ul>';
-            echo '<li>';
-            echo '<pre>';
-            print_r($bugs->getBugScoreDetails($key));
-            echo '</pre>';
-            echo '</li>';
-        echo '</ul>';
-    echo '</li>';
+    $details[$key] = $bugs->getBugScoreDetails($key);
 }
-echo '</ul>';
 
-echo 'Total: ' . array_sum($bugs->getAllBugsScores());
+$data = [
+    'bugs_score'   => $bugs->getAllBugsScores(),
+    'bugs_details' => $details,
+    'total'        => array_sum($bugs->getAllBugsScores()),
+    'scoring'      => $bugs->karma,
+];
 
-
-
-// TODO
-// negative values (riskyness, open regressions)
-// add votes
-//
-?>
-
-<h3> Current scores:</h3>
-<pre><?php print_r($bugs->karma); ?></pre>
+print $twig->render('base.html.twig', $data);
 
 

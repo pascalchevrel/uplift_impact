@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title>BzKarma: measure the impact of bugs as an uplift</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-icons.css" media="screen">
+    <link rel="stylesheet" href="/style/base.css" type="text/css" media="all" />
+  </head>
+  <body class="p-3">
+
+  <div class="card m-auto" style="width:30em">
+    <div class="card-header">Bugs</div>
+    <ul class="list-group list-group-flush">
+      {% for key,value in bugs_score %}
+      <li class="list-group-item p-0 m-1">
+          <details>
+            <summary>
+              <div class="container text-center" style="margin-top: -1.5em;">
+                <div class="row m-0 p-0">
+                  <div class="d-inline-block col m-0 p-0">
+                    <a href="https://bugzilla.mozilla.org/{{key}}" class="">{{key}}</a>
+                  </div>
+                  <div class="col m-0 p-0">
+                    <span class="badge bg-secondary">{{value}}</span>
+                  </div>
+                </div>
+              </div>
+            </summary>
+            <table class="table table-light table-striped table-bordered table-sm mt-1 justify-content-center">
+              {% for field, score in bugs_details[key] %}
+              <tr>
+                <th>{{ field }}</th>
+                <td>{{ score }}</td>
+              </tr>
+              {% endfor %}
+            </table>
+          </details>
+      </li>
+      {% endfor %}
+
+      {% if bugs_score|length  > 1 %}
+      <li class="list-group-item  p-0 m-1">
+        <div class="container text-center">
+          <div class="row m-0 p-0">
+            <div class="d-inline-block col m-0 p-0">Total </div>
+            <div class="col m-0 p-0">
+              <span class="badge bg-secondary">{{ total }}</span>
+            </div>
+          </div>
+        </div>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+  </div>
+
+  <div class="card m-auto mt-3" style="width:30em">
+      <details class="card-header">
+        <summary>Scoring</summary>
+        <table class="table table-light table-striped table-bordered table-sm mt-1 justify-content-center">
+          {% for field,score in scoring %}
+          <tr>
+            <th>{{ field }}</th>
+            <td>
+            {# evaluates to true if the users variable is iterable #}
+            {% if score is iterable %}
+              <ul>
+                {% for inner_field, inner_score in score %}
+                  <li>
+                    {{ inner_field }} : {{ inner_score }}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              {{ score }}
+            {% endif %}
+
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+        </details>
+    </div>
+  </div>
+
+<footer>
+  <p class="text-muted text-center mt-5 font-monospace">Append <code>?bug_id=1817192,1811873,1816574,1812680,1814961,1794577,1788004,1817518,1812447</code> to the url to test your bugs (comma separated bug numbers)</p>
+</footer>
+
+  </body>
+</html>
