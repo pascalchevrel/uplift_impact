@@ -75,11 +75,18 @@ foreach ($bugs->getAllBugsScores() as $key => $value) {
     $details[$key] = $bugs->getBugScoreDetails($key);
 }
 
+$bugs_summary = [];
+foreach ($bug_list_details as $key => $value) {
+    $bugs_summary[$key] = $value['summary'];
+}
+
+
 $data = [
     'bugs_score'   => $bugs->getAllBugsScores(),
     'bugs_details' => $details,
     'total'        => array_sum($bugs->getAllBugsScores()),
     'scoring'      => $bugs->karma,
+    'bugs_summary' => $bugs_summary,
     'title'        => $card_title,
 ];
 

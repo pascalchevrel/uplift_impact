@@ -10,29 +10,36 @@
   </head>
   <body class="p-3">
   <h3 class="text-center mb-4">Impact value estimate of uplifts based on bug metadata</h3>
-  <div class="card m-auto" style="width:30em">
+  <div class="card m-auto" style="width:40em">
     <div class="card-header">{{ title }}</div>
     <ul class="list-group list-group-flush">
       {% for key,value in bugs_score %}
       <li class="list-group-item p-0 m-1">
           <details>
             <summary>
-              <div class="container text-center" style="margin-top: -1.5em;">
+              <div class="container" style="margin-top: -1.5em;">
                 <div class="row m-0 p-0">
-                  <div class="d-inline-block col m-0 p-0">
-                    <a href="https://bugzilla.mozilla.org/{{key}}" class="">{{key}}</a>
+                  <div class="d-inline-block col m-0 ps-4">
+                    <a href="https://bugzilla.mozilla.org/{{key}}" title="{{ bugs_summary[key] }}">{{key}}</a>
                   </div>
-                  <div class="col m-0 p-0">
+                  <div class="col m-0 p-0 text-end">
                     <span class="badge bg-secondary">{{value}}</span>
                   </div>
                 </div>
               </div>
             </summary>
+              <div class="container p-0">
+                <div class="row m-0 p-1">
+                  <div class="d-inline-block col m-0 pe-4 fs-6 fw-light">
+                    {{ bugs_summary[key] }}
+                  </div>
+                </div>
+              </div>
             <table class="table table-light table-striped table-bordered table-sm mt-1 justify-content-center">
               {% for field, score in bugs_details[key] %}
               <tr>
                 <th>{{ field }}</th>
-                <td>{{ score }}</td>
+                <td class="text-end">{{ score }}</td>
               </tr>
               {% endfor %}
             </table>
@@ -42,10 +49,10 @@
 
       {% if bugs_score|length  > 1 %}
       <li class="list-group-item  p-0 m-1">
-        <div class="container text-center">
+        <div class="container">
           <div class="row m-0 p-0">
-            <div class="d-inline-block col m-0 p-0">Total </div>
-            <div class="col m-0 p-0">
+            <div class="d-inline-block col m-0 ps-4">Total </div>
+            <div class="col m-0 p-0 text-end">
               <span class="badge bg-secondary">{{ total }}</span>
             </div>
           </div>
@@ -56,7 +63,7 @@
   </div>
   </div>
 
-  <div class="card m-auto mt-3" style="width:30em">
+  <div class="card m-auto mt-3" style="width:40em">
       <details class="card-header">
         <summary>Scoring</summary>
         <table class="table table-light table-striped table-bordered table-sm mt-1 justify-content-center">
