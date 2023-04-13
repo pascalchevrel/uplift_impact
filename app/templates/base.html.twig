@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="/style/base.css" type="text/css" media="all" />
   </head>
   <body class="p-3">
-
+  <h3 class="text-center mb-4">Impact value estimate of uplifts based on bug metadata</h3>
   <div class="card m-auto" style="width:30em">
-    <div class="card-header">Bugs</div>
+    <div class="card-header">{{ title }}</div>
     <ul class="list-group list-group-flush">
       {% for key,value in bugs_score %}
       <li class="list-group-item p-0 m-1">

@@ -24,11 +24,23 @@ require_once INSTALL_ROOT . 'vendor/autoload.php';
 // Initialize our Templating system
 $twig_loader = new FilesystemLoader(TEMPLATES);
 $twig = new Environment($twig_loader);
+$card_title = 'Bugs';
 
 $bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] !== 0
     ? Utils::getBugsFromString($_GET['bug_id'])
     // 110.0.1 dot release uplifts below
     : [1814780, 1812120, 1805177, 1814696, 1814537, 1813991, 1816160, 1816001, 1816214, 1816191, 1815309, 1816943, 1813498, 1815843, 1763990, 1799684, 1817269];
+
+
+if (isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] !== 0) {
+    $bugs = Utils::getBugsFromString($_GET['bug_id']);
+} else {
+    $bugs = Utils::getJson('https://bugzilla.mozilla.org/rest/bug?include_fields=id&f1=flagtypes.name&o1=substring&v1=approval-mozilla-beta%3F')['bugs'];
+    $bugs = array_column($bugs, 'id');
+    $card_title = 'Bugs requested for Beta uplift';
+}
+
+
 
 $bug_list_details = Utils::getBugDetails(
     $bugs,
@@ -68,6 +80,7 @@ $data = [
     'bugs_details' => $details,
     'total'        => array_sum($bugs->getAllBugsScores()),
     'scoring'      => $bugs->karma,
+    'title'        => $card_title,
 ];
 
 print $twig->render('base.html.twig', $data);
