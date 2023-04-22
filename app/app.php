@@ -13,6 +13,8 @@ mb_internal_encoding('UTF-8');
 // Make sure we have a timezone set
 date_default_timezone_set('UTC');
 
+// Longer timeout than the default 30s because we fetch slow external servers data
+set_time_limit(100);
 
 define('INSTALL_ROOT', dirname(__DIR__, 1) . '/');
 // Application globals paths
