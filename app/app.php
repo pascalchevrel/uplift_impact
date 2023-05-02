@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use BzKarma\Scoring;
-
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -28,12 +27,6 @@ $twig_loader = new FilesystemLoader(TEMPLATES);
 $twig = new Environment($twig_loader);
 $card_title = 'Bugs';
 
-$bugs = isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] !== 0
-    ? Utils::getBugsFromString($_GET['bug_id'])
-    // 110.0.1 dot release uplifts below
-    : [1814780, 1812120, 1805177, 1814696, 1814537, 1813991, 1816160, 1816001, 1816214, 1816191, 1815309, 1816943, 1813498, 1815843, 1763990, 1799684, 1817269];
-
-
 if (isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] !== 0) {
     $bugs = Utils::getBugsFromString($_GET['bug_id']);
 } else {
@@ -47,8 +40,6 @@ if (isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] 
         $card_title = 'Bugs requested for Beta uplift';
     }
 }
-
-
 
 $bug_list_details = Utils::getBugDetails(
     $bugs,
@@ -65,7 +56,7 @@ $bug_list_details = Utils::getBugDetails(
     ]
 );
 
-$bugs = new Scoring($bug_list_details, 111);
+$bugs = new Scoring($bug_list_details, 112);
 
 if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
     switch ((int) $_GET['scenario']) {
@@ -88,7 +79,6 @@ foreach ($bug_list_details as $key => $value) {
     $bugs_summary[$key] = $value['summary'];
 }
 
-
 $data = [
     'bugs_score'   => $bugs->getAllBugsScores(),
     'bugs_details' => $details,
@@ -99,5 +89,3 @@ $data = [
 ];
 
 print $twig->render('base.html.twig', $data);
-
-
