@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f741da3e9b962bbd213b9bb8ac9c5867",
+    "content-hash": "ab947e3d0f62ffe9c459ae678bd5904d",
     "packages": [
         {
             "name": "pchevrel/bzkarma",
@@ -263,16 +263,16 @@
         },
         {
             "name": "twbs/bootstrap-icons",
-            "version": "v1.10.3",
+            "version": "v1.10.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/icons.git",
-                "reference": "817d780a476dbb24b269a89ba56ff1d0d4125132"
+                "reference": "648aa8238437d9da9227f6273cc163ec5841382d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/icons/zipball/817d780a476dbb24b269a89ba56ff1d0d4125132",
-                "reference": "817d780a476dbb24b269a89ba56ff1d0d4125132",
+                "url": "https://api.github.com/repos/twbs/icons/zipball/648aa8238437d9da9227f6273cc163ec5841382d",
+                "reference": "648aa8238437d9da9227f6273cc163ec5841382d",
                 "shasum": ""
             },
             "type": "library",
@@ -296,9 +296,9 @@
             ],
             "support": {
                 "issues": "https://github.com/twbs/icons/issues",
-                "source": "https://github.com/twbs/icons/tree/v1.10.3"
+                "source": "https://github.com/twbs/icons/tree/v1.10.5"
             },
-            "time": "2022-12-27T05:46:02+00:00"
+            "time": "2023-04-26T19:56:04+00:00"
         },
         {
             "name": "twig/twig",
@@ -385,7 +385,11 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "~8.1.0",
+        "ext-mbstring": "*",
+        "ext-curl": "*"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
 }
