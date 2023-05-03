@@ -103,8 +103,8 @@ $data = [
 
 ?>
 <!-- Clear the waiting page -->
-<script type="text/javascript">
-    document.body.innerHTML = '';
+<script>
+   document.body.innerHTML = '';
 </script>
 </html>
 <?php
