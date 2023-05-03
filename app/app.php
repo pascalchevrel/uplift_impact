@@ -46,8 +46,8 @@ if (isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] 
     $bugs = Utils::getJson('https://bugzilla.mozilla.org/rest/bug?include_fields=id&f1=flagtypes.name&o1=substring&v1=approval-mozilla-beta%3F')['bugs'];
 
     if (empty($bugs)) {
-        $bugs = [1827718, 1827429, 1768495, 1827486, 1822817, 1780191, 1826583, 1828587, 1827950];
-        $card_title = '112.0.2 dot release uplifts below';
+        $bugs = [1817192,1811873,1816574,1812680,1814961,1794577,1788004,1817518,1812447];
+        $card_title = 'Some random exmaple bugs';
     } else {
         $bugs = array_column($bugs, 'id');
         $card_title = 'Bugs requested for Beta uplift';
