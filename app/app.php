@@ -16,6 +16,7 @@ date_default_timezone_set('UTC');
 set_time_limit(100);
 
 define('INSTALL_ROOT', dirname(__DIR__, 1) . '/');
+
 // Application globals paths
 const TEMPLATES = INSTALL_ROOT . 'app/templates/';
 
@@ -26,6 +27,18 @@ require_once INSTALL_ROOT . 'vendor/autoload.php';
 $twig_loader = new FilesystemLoader(TEMPLATES);
 $twig = new Environment($twig_loader);
 $card_title = 'Bugs';
+
+// Waiting page while we fetch data
+// Emulate the header BigPipe sends so we can test through Varnish.
+header('Surrogate-Control: BigPipe/1.0');
+// Explicitly disable caching so Varnish and other upstreams won't cache.
+header("Cache-Control: no-cache, must-revalidate");
+// Setting this header instructs Nginx to disable fastcgi_buffering and disable gzip for this request.
+header('X-Accel-Buffering: no');
+
+echo 'Please wait while we query data from Bugzilla... ';
+echo str_repeat(' ', 4096);
+flush();
 
 if (isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] !== 0) {
     $bugs = Utils::getBugsFromString($_GET['bug_id']);
@@ -88,4 +101,11 @@ $data = [
     'title'        => $card_title,
 ];
 
+?>
+<!-- Clear the waiting page -->
+<script type="text/javascript">
+    document.body.innerHTML = '';
+</script>
+</html>
+<?php
 print $twig->render('base.html.twig', $data);
