@@ -101,11 +101,4 @@ $data = [
     'title'        => $card_title,
 ];
 
-?>
-<!-- Clear the waiting page -->
-<script>
-   document.body.innerHTML = '';
-</script>
-</html>
-<?php
 print $twig->render('base.html.twig', $data);
