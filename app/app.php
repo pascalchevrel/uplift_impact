@@ -47,7 +47,7 @@ if (isset($_GET['bug_id']) && ! empty($_GET['bug_id']) && (int) $_GET['bug_id'] 
 
     if (empty($bugs)) {
         $bugs = [1817192,1811873,1816574,1812680,1814961,1794577,1788004,1817518,1812447];
-        $card_title = 'Some random exmaple bugs';
+        $card_title = 'Some random bugs as examples';
     } else {
         $bugs = array_column($bugs, 'id');
         $card_title = 'Bugs requested for Beta uplift';
