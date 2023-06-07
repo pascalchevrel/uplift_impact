@@ -69,7 +69,7 @@ $bug_list_details = Utils::getBugDetails(
     ]
 );
 
-$bugs = new Scoring($bug_list_details, 114);
+$bugs = new Scoring($bug_list_details, (int) Train::BETA->value);
 
 if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
     switch ((int) $_GET['scenario']) {
