@@ -1,7 +1,7 @@
 <?php
 
 enum Train: string {
-    case NIGHTLY = '120';
-    case BETA    = '119';
-    case RELEASE = '118';
+    case NIGHTLY = '122';
+    case BETA    = '121';
+    case RELEASE = '120';
 }
