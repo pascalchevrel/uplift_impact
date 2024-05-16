@@ -23,6 +23,13 @@ const TEMPLATES = INSTALL_ROOT . 'app/templates/';
 // Autoloading of classes (both /vendor/ and /app/classes/)
 require_once INSTALL_ROOT . 'vendor/autoload.php';
 
+// Get Firefox versions
+$firefox_versions = Utils::getJson('https://product-details.mozilla.org/1.0/firefox_versions.json');
+
+define('NIGHTLY', (int) $firefox_versions["FIREFOX_NIGHTLY"]);
+define('BETA',    (int) $firefox_versions["LATEST_FIREFOX_RELEASED_DEVEL_VERSION"]);
+define('RELEASE', (int) $firefox_versions["LATEST_FIREFOX_VERSION"]);
+
 // Initialize our Templating system
 $twig_loader = new FilesystemLoader(TEMPLATES);
 $twig = new Environment($twig_loader);
@@ -59,17 +66,17 @@ $bug_list_details = Utils::getBugDetails(
     [
         'id', 'type', 'summary', 'priority', 'severity', 'keywords',
          'duplicates', 'regressions', 'cf_webcompat_priority', 'cc', 'see_also',
-        'cf_tracking_firefox' . Train::NIGHTLY->value,
-        'cf_tracking_firefox' . Train::BETA->value,
-        'cf_tracking_firefox' . Train::RELEASE->value,
-        'cf_status_firefox' . Train::NIGHTLY->value,
-        'cf_status_firefox' . Train::BETA->value,
-        'cf_status_firefox' . Train::RELEASE->value,
+        'cf_tracking_firefox' . NIGHTLY,
+        'cf_tracking_firefox' . BETA,
+        'cf_tracking_firefox' . RELEASE,
+        'cf_status_firefox' . NIGHTLY,
+        'cf_status_firefox' . BETA,
+        'cf_status_firefox' . RELEASE,
         'cf_performance_impact'
     ]
 );
 
-$bugs = new Scoring($bug_list_details, (int) Train::BETA->value);
+$bugs = new Scoring($bug_list_details, (int) BETA);
 
 if (isset($_GET['scenario']) && ! empty($_GET['scenario'])) {
     switch ((int) $_GET['scenario']) {
